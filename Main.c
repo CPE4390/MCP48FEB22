@@ -1,5 +1,4 @@
 #include <xc.h>
-#include <stdio.h>
 #include "LCD.h"
 #include "MCP48FEB22.h"
 #include <math.h>
@@ -13,10 +12,6 @@
 void InitPins(void);
 void ConfigInterrupts(void);
 
-#define _XTAL_FREQ 40000000L
-
-char lcdstr[17];
-
 void main(void) {
     const double PI = 3.14159265;
     const double PI_2 = 2 * PI;
@@ -26,14 +21,13 @@ void main(void) {
     OSCTUNEbits.PLLEN = 1;
     InitPins();
     LCDInit();
-    LCDClear();
     ConfigInterrupts();
     InitMCP48FEB22();
     reg = MCP48FEB22ReadRegister(0x0a);
     MCP48FEB22WriteRegister(0x08, 0x0000);  //VREF = Vdd
     WriteDAC(0, 0x0);
     WriteDAC(1, 0x0);
-    LCDWriteLine("Starting", 0);
+    lprintf(0, "MCP48FEB22");
     int v0 = 0;
     int v1 = 0;
     while (1) {
@@ -66,7 +60,7 @@ void ConfigInterrupts(void) {
 
 
 
-void interrupt HighIsr(void) {
+void __interrupt(high_priority) HighIsr(void) {
     
     //Check the source of the interrupt
     

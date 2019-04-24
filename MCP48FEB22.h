@@ -15,7 +15,7 @@ extern "C" {
 #endif
 
 void InitMCP48FEB22(void);
-void MCP48FEB22WriteRegister(char reg, unsigned int value);
+char MCP48FEB22WriteRegister(char reg, unsigned int value);
 unsigned int MCP48FEB22ReadRegister(char reg);
 void WriteDAC(char output, unsigned int value);
 
